@@ -145,7 +145,3 @@ Generate package.json content as a string.
 ### `writePackageJson(config: PackageConfig, options?): Promise<void>`
 
 Generate and write package.json to disk.
-
-## License
-
-MIT
