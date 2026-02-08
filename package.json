@@ -1,0 +1,39 @@
+{
+  "name": "@a35hie/ts-pkg",
+  "version": "0.1.0",
+  "description": "TypeScript-based package.json with magical features",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/a35hie/TsPkg",
+  "type": "module",
+  "main": "dist/main.js",
+  "module": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "bin": {
+    "ts-pkg": "./dist/main.js"
+  },
+  "scripts": {
+    "build": "bun run build.ts",
+    "build:watch": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest --coverage",
+    "generate": "bun run src/main.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.8",
+    "bun-plugin-dts": "^0.3.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18",
+    "bun": ">=1.0"
+  },
+  "private": false
+}
