@@ -2,7 +2,7 @@ import { definePackageConfig } from '@/main.ts'
 
 export default definePackageConfig({
   name: '@a35hie/ts-pkg',
-  version: '0.1.0',
+  version: '0.1.1',
   description: 'TypeScript-based package.json with magical features',
   type: 'module',
   license: 'Apache-2.0',
