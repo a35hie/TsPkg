@@ -1,4 +1,4 @@
-import type { DependencyInput } from '../schemas/package'
+import type { DependencyInput, DependenciesInput } from '../schemas/package'
 
 interface NpmPackageInfo {
   'dist-tags': {
@@ -62,9 +62,18 @@ async function resolveDependency(
 
 // Resolve all dependencies in parallel with batching
 export async function resolveDependencies(
-  deps: DependencyInput[] | undefined
+  deps: DependenciesInput | undefined
 ): Promise<Record<string, string>> {
-  if (!deps || deps.length === 0) {
+  if (!deps) {
+    return {}
+  }
+
+  // If already an object (standard format), return as-is
+  if (!Array.isArray(deps)) {
+    return deps
+  }
+
+  if (deps.length === 0) {
     return {}
   }
 
@@ -77,9 +86,18 @@ export async function resolveDependencies(
 const versionCache = new Map<string, string>()
 
 export async function resolveDependenciesCached(
-  deps: DependencyInput[] | undefined
+  deps: DependenciesInput | undefined
 ): Promise<Record<string, string>> {
-  if (!deps || deps.length === 0) {
+  if (!deps) {
+    return {}
+  }
+
+  // If already an object (standard format), return as-is
+  if (!Array.isArray(deps)) {
+    return deps
+  }
+
+  if (deps.length === 0) {
     return {}
   }
 

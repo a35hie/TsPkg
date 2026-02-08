@@ -76,8 +76,11 @@ export type ScriptPreset =
   | 'prettier'
   | 'eslint'
 
-// Dependency can be: 'lodash' | 'lodash@^4' | { lodash: '^4.0.0' }
+// Dependency can be: 'lodash' | 'lodash@^4' | { lodash: '^4.0.0' } | Record<string, string>
 export type DependencyInput = string | Record<string, string>
+
+// Dependencies can be array (magical) or object (standard)
+export type DependenciesInput = DependencyInput[] | Record<string, string>
 
 // Conditional config block
 export interface ConditionalConfig {
@@ -102,10 +105,10 @@ export interface PackageConfig extends Omit<
   scriptPresets?: ScriptPreset[]
   scripts?: Record<string, string>
 
-  // Magical dependency inputs (auto-resolve versions)
-  dependencies?: DependencyInput[]
-  devDependencies?: DependencyInput[]
-  peerDependencies?: DependencyInput[]
+  // Magical dependency inputs (auto-resolve versions) or standard object format
+  dependencies?: DependenciesInput
+  devDependencies?: DependenciesInput
+  peerDependencies?: DependenciesInput
 
   // Conditional configuration
   conditions?: ConditionalConfig[]

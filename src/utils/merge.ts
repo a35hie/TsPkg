@@ -1,4 +1,4 @@
-import type { PackageConfig } from '../schemas/package'
+import type { PackageConfig, DependenciesInput } from '../schemas/package'
 
 // Deep merge two objects, with source overriding target
 export function deepMerge<T extends Record<string, unknown>>(
@@ -33,12 +33,33 @@ export function deepMerge<T extends Record<string, unknown>>(
   return result
 }
 
-// Merge arrays (for dependencies)
-export function mergeArrays<T>(
-  target: T[] | undefined,
-  source: T[] | undefined
-): T[] {
-  return [...(target ?? []), ...(source ?? [])]
+// Merge dependencies (handles both array and object formats)
+export function mergeDependencies(
+  target: DependenciesInput | undefined,
+  source: DependenciesInput | undefined
+): DependenciesInput | undefined {
+  if (!target && !source) return undefined
+  if (!target) return source
+  if (!source) return target
+
+  // If both are arrays, concat them
+  if (Array.isArray(target) && Array.isArray(source)) {
+    return [...target, ...source]
+  }
+
+  // If both are objects, merge them
+  if (!Array.isArray(target) && !Array.isArray(source)) {
+    return { ...target, ...source }
+  }
+
+  // Mixed formats: convert array to object entries and merge
+  const targetObj = Array.isArray(target) ? {} : target
+  const sourceObj = Array.isArray(source) ? {} : source
+  const targetArr = Array.isArray(target) ? target : []
+  const sourceArr = Array.isArray(source) ? source : []
+
+  // Return as array with both arrays and object merged
+  return [...targetArr, ...sourceArr, { ...targetObj, ...sourceObj }]
 }
 
 // Resolve extends chain
@@ -68,16 +89,16 @@ export async function resolveExtends(
   return {
     ...baseConfig,
     ...currentWithoutExtends,
-    // Merge arrays for dependencies
-    dependencies: mergeArrays(
+    // Merge dependencies (handles both array and object formats)
+    dependencies: mergeDependencies(
       baseConfig.dependencies,
       currentWithoutExtends.dependencies
     ),
-    devDependencies: mergeArrays(
+    devDependencies: mergeDependencies(
       baseConfig.devDependencies,
       currentWithoutExtends.devDependencies
     ),
-    peerDependencies: mergeArrays(
+    peerDependencies: mergeDependencies(
       baseConfig.peerDependencies,
       currentWithoutExtends.peerDependencies
     ),

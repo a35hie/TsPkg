@@ -3,6 +3,7 @@ import type {
   StandardPackageJson,
   ScriptPreset,
   DependencyInput,
+  DependenciesInput,
   ConditionalConfig,
   License,
 } from './schemas/package'
@@ -55,6 +56,7 @@ export {
   type StandardPackageJson,
   type ScriptPreset,
   type DependencyInput,
+  type DependenciesInput,
   type ConditionalConfig,
   type GenerateOptions,
   type License,
