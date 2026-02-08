@@ -1,4 +1,4 @@
-# ts-pkg-config
+# TS Package Config
 
 ✨ TypeScript-based `package.json` with magical features.
 
@@ -70,9 +70,9 @@ export default definePackageConfig({
 Generate your `package.json`:
 
 ```bash
-bun run ts-pkg-config
+bunx ts-pkg
 # or
-bun run src/main.ts package.config.ts package.json
+bunx ts-pkg package.config.ts package.json
 ```
 
 ## Script Presets

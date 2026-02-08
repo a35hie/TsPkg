@@ -79,6 +79,7 @@ export async function writePackageJson(
 ): Promise<void> {
   const { outputPath = 'package.json' } = options
   const json = await createPackageJson(config, options)
-  await Bun.write(outputPath, json + '\n')
+  const { writeFile } = await import('node:fs/promises')
+  await writeFile(outputPath, json + '\n')
   console.log(`✨ Generated ${outputPath}`)
 }

@@ -61,8 +61,3 @@ export {
   type GenerateOptions,
   type License,
 }
-
-// Run if main module
-if (import.meta.main) {
-  main()
-}
