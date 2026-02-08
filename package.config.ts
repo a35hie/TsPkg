@@ -55,6 +55,4 @@ export default definePackageConfig({
     node: '>=18',
     bun: '>=1.0',
   },
-
-  private: false,
 })
