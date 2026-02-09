@@ -4,6 +4,8 @@
 
 Define your package configuration in TypeScript with type safety, auto-complete, and powerful features like automatic version resolution, script presets, config inheritance, and conditional configuration.
 
+> IMPORTANT: It is imperative to read this page before using this package.
+
 ## Features
 
 - **Auto-resolve versions** – List package names, latest versions are fetched automatically
@@ -15,7 +17,7 @@ Define your package configuration in TypeScript with type safety, auto-complete,
 ## Installation
 
 ```bash
-bun add -D ts-pkg-config
+bun add -D @a35hie/ts-pkg
 ```
 
 ## Usage
@@ -23,7 +25,7 @@ bun add -D ts-pkg-config
 Create a `package.config.ts` file:
 
 ```typescript
-import { definePackageConfig } from 'ts-pkg-config'
+import { definePackageConfig } from '@a35hie/ts-pkg'
 
 export default definePackageConfig({
   name: 'my-awesome-package',
@@ -41,8 +43,8 @@ export default definePackageConfig({
 
   // ✨ Just list packages - versions resolved automatically!
   dependencies: [
-    'lodash', // → "lodash": "^4.17.21"
-    'zod', // → "zod": "^3.22.4"
+    'lodash', // → "lodash": "^4.17.23"
+    'zod', // → "zod": "^4.3.6"
   ],
 
   devDependencies: [
@@ -74,6 +76,21 @@ bunx ts-pkg
 # or
 bunx ts-pkg package.config.ts package.json
 ```
+
+## Syncing Dependencies
+
+When you install packages with `bun add` or `npm install`, sync them back to your config:
+
+```bash
+# After installing packages
+bun add lodash axios
+ts-pkg sync
+
+# Or specify paths
+ts-pkg sync package.config.ts package.json
+```
+
+This keeps your `package.config.ts` as the source of truth while still allowing quick installs via your package manager.
 
 ## Script Presets
 
@@ -109,7 +126,7 @@ export default definePackageConfig({
 
 ## Conditional Configuration
 
-Apply different settings based on environment:
+Apply different settings based on the environment:
 
 ```typescript
 conditions: [
