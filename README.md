@@ -18,6 +18,9 @@ Define your package configuration in TypeScript with type safety, auto-complete,
 
 ```bash
 bun add -D @a35hie/ts-pkg
+# or
+npm add -D @a35hie/ts-pkg
+# or whatever you prefer
 ```
 
 ## Usage
@@ -72,9 +75,9 @@ export default definePackage({
 Generate your `package.json`:
 
 ```bash
-bunx ts-pkg
+ts-pkg
 # or
-bunx ts-pkg package.ts package.json
+ts-pkg package.ts package.json
 ```
 
 ## Syncing Dependencies

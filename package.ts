@@ -2,11 +2,19 @@ import { definePackage } from '@/main.ts'
 
 export default definePackage({
   name: '@a35hie/ts-pkg',
-  version: '0.3.0',
+  version: '0.3.1',
   description: 'TypeScript-based package.json with magical features',
   type: 'module',
   license: 'Apache-2.0',
   repository: 'https://github.com/a35hie/TsPkg',
+  keywords: [
+    'typescript',
+    'package-json',
+    'npm',
+    'bun',
+    'monorepo-tooling',
+    'nodejs',
+  ],
 
   // Entry points
   main: 'dist/main.js',
