@@ -29,7 +29,10 @@ Postinstall setup:
 `)
 }
 
-async function runGenerate(configPath: string, outputPath: string): Promise<void> {
+async function runGenerate(
+  configPath: string,
+  outputPath: string
+): Promise<void> {
   const absoluteConfigPath: string = resolve(process.cwd(), configPath)
 
   try {
@@ -60,10 +63,13 @@ export default definePackageConfig({
   }
 }
 
-async function runSync(configPath: string, packageJsonPath: string): Promise<void> {
+async function runSync(
+  configPath: string,
+  packageJsonPath: string
+): Promise<void> {
   // Detect if running from postinstall (npm_lifecycle_event is set by npm/bun)
   const isPostinstall = process.env.npm_lifecycle_event === 'postinstall'
-  
+
   await syncDependencies({
     configPath,
     packageJsonPath,

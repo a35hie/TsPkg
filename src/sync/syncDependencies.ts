@@ -34,9 +34,23 @@ function formatDepsArray(deps: string[], indent: string = '    '): string {
 }
 
 /**
+ * Format dependencies as a TypeScript object
+ */
+function formatDepsObject(
+  deps: Record<string, string>,
+  indent: string = '    '
+): string {
+  const entries = Object.entries(deps).sort(([a], [b]) => a.localeCompare(b))
+  if (entries.length === 0) return '{}'
+  return `{\n${entries.map(([name, version]) => `${indent}'${name}': '${version}',`).join('\n')}\n  }`
+}
+
+/**
  * Sync dependencies from package.json back to package.config.ts
  */
-export async function syncDependencies(options: SyncOptions = {}): Promise<void> {
+export async function syncDependencies(
+  options: SyncOptions = {}
+): Promise<void> {
   const {
     packageJsonPath = 'package.json',
     configPath = 'package.config.ts',
@@ -88,10 +102,25 @@ export async function syncDependencies(options: SyncOptions = {}): Promise<void>
   // Update config content with new dependencies
   let updatedContent = configContent
 
-  // Update dependencies array
-  updatedContent = updateDepsInConfig(updatedContent, 'dependencies', deps)
-  updatedContent = updateDepsInConfig(updatedContent, 'devDependencies', devDeps)
-  updatedContent = updateDepsInConfig(updatedContent, 'peerDependencies', peerDeps)
+  // Update dependencies (detect format: array vs object)
+  updatedContent = updateDepsInConfig(
+    updatedContent,
+    'dependencies',
+    deps,
+    packageJson.dependencies
+  )
+  updatedContent = updateDepsInConfig(
+    updatedContent,
+    'devDependencies',
+    devDeps,
+    packageJson.devDependencies
+  )
+  updatedContent = updateDepsInConfig(
+    updatedContent,
+    'peerDependencies',
+    peerDeps,
+    packageJson.peerDependencies
+  )
 
   // Write updated config
   await writeFile(absoluteConfigPath, updatedContent)
@@ -99,19 +128,26 @@ export async function syncDependencies(options: SyncOptions = {}): Promise<void>
   if (!quiet) {
     console.log(`✨ Synced dependencies to ${configPath}`)
     if (deps.length) console.log(`   dependencies: ${deps.length} packages`)
-    if (devDeps.length) console.log(`   devDependencies: ${devDeps.length} packages`)
-    if (peerDeps.length) console.log(`   peerDependencies: ${peerDeps.length} packages`)
+    if (devDeps.length)
+      console.log(`   devDependencies: ${devDeps.length} packages`)
+    if (peerDeps.length)
+      console.log(`   peerDependencies: ${peerDeps.length} packages`)
   }
 }
 
 /**
- * Find the end of an array starting at a given position
+ * Find the end of a bracket pair ([] or {}) starting at a given position
  */
-function findArrayEnd(content: string, startIndex: number): number {
+function findBracketEnd(
+  content: string,
+  startIndex: number,
+  openChar: string,
+  closeChar: string
+): number {
   let depth = 0
   for (let i = startIndex; i < content.length; i++) {
-    if (content[i] === '[') depth++
-    else if (content[i] === ']') {
+    if (content[i] === openChar) depth++
+    else if (content[i] === closeChar) {
       depth--
       if (depth === 0) return i
     }
@@ -121,35 +157,55 @@ function findArrayEnd(content: string, startIndex: number): number {
 
 /**
  * Update a specific dependency type in the config content
+ * Handles both array format (dependencies: ['vue']) and object format (dependencies: { vue: '^3' })
  */
 function updateDepsInConfig(
   content: string,
   depType: 'dependencies' | 'devDependencies' | 'peerDependencies',
-  deps: string[]
+  depsArray: string[],
+  depsObject: Record<string, string> | undefined
 ): string {
-  const formattedDeps = formatDepsArray(deps)
+  // Check if config uses array format
+  const arrayPattern = new RegExp(`(${depType}:\\s*)\\[`)
+  const arrayMatch = arrayPattern.exec(content)
 
-  // Find the field pattern (e.g., "dependencies:")
-  const fieldPattern = new RegExp(`(${depType}:\\s*)\\[`)
-  const match = fieldPattern.exec(content)
-
-  if (match && match[1]) {
-    const arrayStart = match.index + match[1].length
-    const arrayEnd = findArrayEnd(content, arrayStart)
+  if (arrayMatch && arrayMatch[1]) {
+    // Array format - replace with array of package names (no versions)
+    const formattedDeps = formatDepsArray(depsArray)
+    const arrayStart = arrayMatch.index + arrayMatch[1].length
+    const arrayEnd = findBracketEnd(content, arrayStart, '[', ']')
     if (arrayEnd !== -1) {
-      return content.slice(0, arrayStart) + formattedDeps + content.slice(arrayEnd + 1)
+      return (
+        content.slice(0, arrayStart) +
+        formattedDeps +
+        content.slice(arrayEnd + 1)
+      )
     }
   }
 
-  // If the field doesn't exist and we have deps to add, we need to add it
-  if (deps.length > 0) {
-    // Try to find a good insertion point
+  // Check if config uses object format
+  const objectPattern = new RegExp(`(${depType}:\\s*)\\{`)
+  const objectMatch = objectPattern.exec(content)
+
+  if (objectMatch && objectMatch[1]) {
+    // Object format - replace with object including versions
+    const formattedDeps = formatDepsObject(depsObject || {})
+    const objStart = objectMatch.index + objectMatch[1].length
+    const objEnd = findBracketEnd(content, objStart, '{', '}')
+    if (objEnd !== -1) {
+      return (
+        content.slice(0, objStart) + formattedDeps + content.slice(objEnd + 1)
+      )
+    }
+  }
+
+  // If the field doesn't exist and we have deps to add, add as array format
+  if (depsArray.length > 0) {
+    const formattedDeps = formatDepsArray(depsArray)
     const insertPatterns = [
-      // After existing dep fields (match the whole field including multiline array)
-      { pattern: /peerDependencies:\s*\[/, after: true },
-      { pattern: /devDependencies:\s*\[/, after: true },
-      { pattern: /dependencies:\s*\[/, after: true },
-      // Before conditions or engines
+      { pattern: /peerDependencies:\s*[\[{]/, after: true },
+      { pattern: /devDependencies:\s*[\[{]/, after: true },
+      { pattern: /dependencies:\s*[\[{]/, after: true },
       { pattern: /(\n\s*)(conditions:\s*\[)/, before: true },
       { pattern: /(\n\s*)(engines:\s*\{)/, before: true },
     ]
@@ -158,22 +214,39 @@ function updateDepsInConfig(
       const m = pattern.exec(content)
       if (m) {
         if (after) {
-          // Find end of this array and insert after
-          const arrStart = m.index + m[0].length - 1
-          const arrEnd = findArrayEnd(content, arrStart)
-          if (arrEnd !== -1) {
-            // Find the end of line (including trailing comma)
-            let insertPos = arrEnd + 1
+          const startChar = content[m.index + m[0].length - 1]
+          const isArray = startChar === '['
+          const bracketStart = m.index + m[0].length - 1
+          const bracketEnd = findBracketEnd(
+            content,
+            bracketStart,
+            isArray ? '[' : '{',
+            isArray ? ']' : '}'
+          )
+          if (bracketEnd !== -1) {
+            let insertPos = bracketEnd + 1
             let char = content[insertPos]
-            while (insertPos < content.length && char && /[,\s]/.test(char) && char !== '\n') {
+            while (
+              insertPos < content.length &&
+              char &&
+              /[,\s]/.test(char) &&
+              char !== '\n'
+            ) {
               insertPos++
               char = content[insertPos]
             }
             if (content[insertPos] === '\n') insertPos++
-            return content.slice(0, insertPos) + `\n  ${depType}: ${formattedDeps},\n` + content.slice(insertPos)
+            return (
+              content.slice(0, insertPos) +
+              `\n  ${depType}: ${formattedDeps},\n` +
+              content.slice(insertPos)
+            )
           }
         } else if (before) {
-          return content.replace(pattern, `$1${depType}: ${formattedDeps},\n$1$2`)
+          return content.replace(
+            pattern,
+            `$1${depType}: ${formattedDeps},\n$1$2`
+          )
         }
       }
     }

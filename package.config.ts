@@ -2,7 +2,7 @@ import { definePackageConfig } from '@/main.ts'
 
 export default definePackageConfig({
   name: '@a35hie/ts-pkg',
-  version: '0.2.0',
+  version: '0.2.1',
   description: 'TypeScript-based package.json with magical features',
   type: 'module',
   license: 'Apache-2.0',
@@ -18,7 +18,7 @@ export default definePackageConfig({
   files: ['dist'],
 
   // Script presets auto-generate common scripts
-  scriptPresets: ['typescript', 'prettier' ],
+  scriptPresets: ['typescript', 'prettier'],
 
   // Custom scripts (merged with presets, overrides if same name)
   scripts: {
@@ -29,12 +29,7 @@ export default definePackageConfig({
   // Just list package names - versions auto-resolved!
   dependencies: [],
 
-  devDependencies: [
-    '@types/bun',
-    'bun-plugin-dts',
-    'prettier',
-    'typescript',
-  ],
+  devDependencies: ['@types/bun', 'bun-plugin-dts', 'prettier', 'typescript'],
 
   peerDependencies: ['typescript'],
 
