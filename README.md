@@ -22,12 +22,12 @@ bun add -D @a35hie/ts-pkg
 
 ## Usage
 
-Create a `package.config.ts` file:
+Create a `package.ts` file:
 
 ```typescript
-import { definePackageConfig } from '@a35hie/ts-pkg'
+import { definePackage } from '@a35hie/ts-pkg'
 
-export default definePackageConfig({
+export default definePackage({
   name: 'my-awesome-package',
   version: '1.0.0',
   description: 'An awesome package',
@@ -74,7 +74,7 @@ Generate your `package.json`:
 ```bash
 bunx ts-pkg
 # or
-bunx ts-pkg package.config.ts package.json
+bunx ts-pkg package.ts package.json
 ```
 
 ## Syncing Dependencies
@@ -87,10 +87,10 @@ bun add lodash axios
 ts-pkg sync
 
 # Or specify paths
-ts-pkg sync package.config.ts package.json
+ts-pkg sync package.ts package.json
 ```
 
-This keeps your `package.config.ts` as the source of truth while still allowing quick installs via your package manager.
+This keeps your `package.ts` as the source of truth while still allowing quick installs via your package manager.
 
 ## Script Presets
 
@@ -109,15 +109,15 @@ Extend from a base config:
 
 ```typescript
 // base.config.ts
-export default definePackageConfig({
+export default definePackage({
   author: 'Your Name',
   license: 'MIT',
   scriptPresets: ['typescript', 'prettier'],
   devDependencies: ['typescript', 'prettier'],
 })
 
-// package.config.ts
-export default definePackageConfig({
+// package.ts
+export default definePackage({
   extends: './base.config.ts',
   name: 'my-package',
   dependencies: ['lodash'],
@@ -151,7 +151,7 @@ conditions: [
 
 ## API
 
-### `definePackageConfig(config: PackageConfig): PackageConfig`
+### `definePackage(config: PackageConfig): PackageConfig`
 
 Type-safe helper for defining your configuration.
 

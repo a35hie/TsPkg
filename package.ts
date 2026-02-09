@@ -1,8 +1,8 @@
-import { definePackageConfig } from '@/main.ts'
+import { definePackage } from '@/main.ts'
 
-export default definePackageConfig({
+export default definePackage({
   name: '@a35hie/ts-pkg',
-  version: '0.2.1',
+  version: '0.3.0',
   description: 'TypeScript-based package.json with magical features',
   type: 'module',
   license: 'Apache-2.0',

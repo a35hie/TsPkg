@@ -14,14 +14,14 @@ Usage:
   ts-pkg help                         Show this help message
 
 Commands:
-  (default)  Generate package.json from package.config.ts
-  sync       Sync dependencies from package.json back to package.config.ts
+  (default)  Generate package.json from package.ts
+  sync       Sync dependencies from package.json back to package.ts
 
 Examples:
-  ts-pkg                              # Generate from package.config.ts
+  ts-pkg                              # Generate from package.ts
   ts-pkg my.config.ts                 # Generate from custom config
-  ts-pkg sync                         # Sync deps to package.config.ts
-  ts-pkg sync package.config.ts package.json
+  ts-pkg sync                         # Sync deps to package.ts
+  ts-pkg sync package.ts package.json
 
 Postinstall setup:
   Add to your package.json scripts:
@@ -44,11 +44,11 @@ async function runGenerate(
     const err = error as NodeJS.ErrnoException
     if (err.code === 'ERR_MODULE_NOT_FOUND' || err.code === 'ENOENT') {
       console.error(`× Config file not found: ${configPath}`)
-      console.error('\nCreate a package.config.ts file with:')
+      console.error('\nCreate a package.ts file with:')
       console.error(`
-import { definePackageConfig } from '@a35hie/ts-pkg'
+import { definePackage } from '@a35hie/ts-pkg'
 
-export default definePackageConfig({
+export default definePackage({
   name: 'my-package',
   version: '1.0.0',
   scriptPresets: ['typescript', 'testing'],
@@ -88,14 +88,14 @@ async function main(): Promise<void> {
   }
 
   if (command === 'sync') {
-    const configPath = args[1] ?? 'package.config.ts'
+    const configPath = args[1] ?? 'package.ts'
     const packageJsonPath = args[2] ?? 'package.json'
     await runSync(configPath, packageJsonPath)
     return
   }
 
   // Default: generate package.json
-  const configPath = args[0] ?? 'package.config.ts'
+  const configPath = args[0] ?? 'package.ts'
   const outputPath = args[1] ?? 'package.json'
   await runGenerate(configPath, outputPath)
 }

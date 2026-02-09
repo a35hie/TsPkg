@@ -1,4 +1,4 @@
-import type { ScriptPreset } from '../schemas/package'
+import type { ScriptPreset } from '@/schemas/package'
 
 type ScriptDefinitions = Record<string, string>
 

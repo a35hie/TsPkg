@@ -1,4 +1,4 @@
-import type { PackageConfig, DependenciesInput } from '../schemas/package'
+import type { PackageConfig, DependenciesInput } from '@/schemas/package'
 
 // Deep merge two objects, with source overriding target
 export function deepMerge<T extends Record<string, unknown>>(

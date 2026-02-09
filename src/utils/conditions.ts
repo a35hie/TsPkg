@@ -1,5 +1,5 @@
-import type { ConditionalConfig, StandardPackageJson } from '../schemas/package'
-import { deepMerge } from './merge'
+import type { ConditionalConfig, StandardPackageJson } from '@/schemas/package'
+import { deepMerge } from '@/utils/merge'
 
 interface ConditionContext {
   env: string

@@ -46,14 +46,14 @@ function formatDepsObject(
 }
 
 /**
- * Sync dependencies from package.json back to package.config.ts
+ * Sync dependencies from package.json back to package.ts
  */
 export async function syncDependencies(
   options: SyncOptions = {}
 ): Promise<void> {
   const {
     packageJsonPath = 'package.json',
-    configPath = 'package.config.ts',
+    configPath = 'package.ts',
     quiet = false,
     delay = 0,
   } = options
@@ -88,7 +88,7 @@ export async function syncDependencies(
     const err = error as NodeJS.ErrnoException
     if (err.code === 'ENOENT') {
       console.error(`× Config file not found: ${configPath}`)
-      console.error('Run ts-pkg init first to create a package.config.ts')
+      console.error('Run ts-pkg init first to create a package.ts')
       process.exit(1)
     }
     throw error

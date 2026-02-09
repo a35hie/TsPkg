@@ -7,8 +7,8 @@ await Bun.build({
   format: 'esm',
   target: 'node',
   splitting: false,
-  sourcemap: 'external',
-  minify: false,
+  sourcemap: 'none',
+  minify: true,
   plugins: [dts()],
 })
 
@@ -19,7 +19,7 @@ await Bun.build({
   format: 'esm',
   target: 'node',
   splitting: false,
-  minify: false,
+  minify: true,
   banner: '#!/usr/bin/env bun',
 })
 

@@ -1,8 +1,8 @@
-import type { PackageConfig, StandardPackageJson } from '../schemas/package'
-import { getPresetScripts, mergeScripts } from '../presets/scripts'
-import { resolveDependenciesCached } from '../resolvers/dependencies'
-import { resolveExtends } from '../utils/merge'
-import { applyConditions } from '../utils/conditions'
+import type { PackageConfig, StandardPackageJson } from '@/schemas/package'
+import { getPresetScripts, mergeScripts } from '@/presets/scripts'
+import { resolveDependenciesCached } from '@/resolvers/dependencies'
+import { resolveExtends } from '@/utils/merge'
+import { applyConditions } from '@/utils/conditions'
 
 export interface GenerateOptions {
   indent?: number

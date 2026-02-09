@@ -1,4 +1,4 @@
-import type { DependencyInput, DependenciesInput } from '../schemas/package'
+import type { DependencyInput, DependenciesInput } from '@/schemas/package'
 
 interface NpmPackageInfo {
   'dist-tags': {
