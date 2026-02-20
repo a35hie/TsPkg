@@ -1,4 +1,6 @@
-# TS Package Config
+<img src="/images/ts-pkg-icon.png" alt="ts-pkg icon" width="128" height="128">
+
+# ts-pkg
 
 ✨ TypeScript-based `package.json` with magical features.
 

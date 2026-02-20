@@ -3,10 +3,19 @@ import { writePackageJson } from '@/generator/createPackageJson'
 import { syncDependencies } from '@/sync/syncDependencies'
 import { resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import pkg, { logo } from '../package'
+
+function printInfo(): void {
+  console.log(`
+${logo}
+${pkg.description}
+Version: ${pkg.version}
+  `)
+}
 
 function printHelp(): void {
+  printInfo()
   console.log(`
-ts-pkg - TypeScript-based package.json generator
 
 Usage:
   ts-pkg [configPath] [outputPath]    Generate package.json from config
@@ -22,10 +31,6 @@ Examples:
   ts-pkg my.config.ts                 # Generate from custom config
   ts-pkg sync                         # Sync deps to package.ts
   ts-pkg sync package.ts package.json
-
-Postinstall setup:
-  Add to your package.json scripts:
-    "postinstall": "ts-pkg sync"
 `)
 }
 
@@ -43,6 +48,8 @@ async function runGenerate(
   } catch (error) {
     const err = error as NodeJS.ErrnoException
     if (err.code === 'ERR_MODULE_NOT_FOUND' || err.code === 'ENOENT') {
+      printInfo()
+
       console.error(`× Config file not found: ${configPath}`)
       console.error('\nCreate a package.ts file with:')
       console.error(`

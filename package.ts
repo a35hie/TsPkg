@@ -1,9 +1,21 @@
 import { definePackage } from '@/main.ts'
 
+export const logo: string = `
+ ▄██████████████▄
+██████████████████
+██████████████████
+█████▒▒▒▒▒██▒▒▒███  ███  █  █   ██
+███████▒███▒██████  █  █ █ █   █
+███████▒████▒▒▒██▒▒ █  █ ██   █
+███████▒███████▒██  ███  █ █   █ █
+███████▒████▒▒▒███  █    █  █   ██
+ ▀██████████████▀
+`
+
 export default definePackage({
   name: '@a35hie/ts-pkg',
-  version: '0.3.1',
-  description: 'TypeScript-based package.json with magical features',
+  version: '0.4.0',
+  description: 'TypeScript-based package.json with magical features.',
   type: 'module',
   license: 'Apache-2.0',
   repository: 'https://github.com/a35hie/TsPkg',
@@ -23,7 +35,7 @@ export default definePackage({
   bin: {
     'ts-pkg': './dist/cli.js',
   },
-  files: ['dist'],
+  files: ['dist', 'images'],
 
   // Script presets auto-generate common scripts
   scriptPresets: ['typescript', 'prettier'],
@@ -34,12 +46,16 @@ export default definePackage({
     generate: 'bun run src/cli.ts',
   },
 
-  // Just list package names - versions auto-resolved!
-  dependencies: [],
+  devDependencies: {
+    '@types/bun': '^1.3.8',
+    'bun-plugin-dts': '^0.3.0',
+    prettier: '^3.8.1',
+    typescript: '^6.0.0-beta',
+  },
 
-  devDependencies: ['@types/bun', 'bun-plugin-dts', 'prettier', 'typescript'],
-
-  peerDependencies: ['typescript'],
+  peerDependencies: {
+    typescript: '^6.0.0-beta',
+  },
 
   // Conditional configuration based on environment
   conditions: [
@@ -60,7 +76,7 @@ export default definePackage({
   ],
 
   engines: {
-    node: '>=18',
-    bun: '>=1.0',
+    node: '>=22',
+    bun: '>=1.3.5',
   },
 })
