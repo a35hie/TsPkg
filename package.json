@@ -1,5 +1,5 @@
 {
-  "name": "@a35hie/ts-pkg",
+  "name": "@opk/ts-pkg",
   "version": "0.4.0",
   "description": "TypeScript-based package.json with magical features.",
   "keywords": [
@@ -11,7 +11,7 @@
     "nodejs"
   ],
   "license": "Apache-2.0",
-  "repository": "https://github.com/a35hie/TsPkg",
+  "repository": "https://github.com/opk-pm/TsPkg",
   "type": "module",
   "main": "dist/main.js",
   "module": "dist/main.js",

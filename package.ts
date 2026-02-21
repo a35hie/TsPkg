@@ -13,12 +13,12 @@ export const logo: string = `
 `
 
 export default definePackage({
-  name: '@a35hie/ts-pkg',
+  name: '@opk/ts-pkg',
   version: '0.4.0',
   description: 'TypeScript-based package.json with magical features.',
   type: 'module',
   license: 'Apache-2.0',
-  repository: 'https://github.com/a35hie/TsPkg',
+  repository: 'https://github.com/opk-pm/TsPkg',
   keywords: [
     'typescript',
     'package-json',
