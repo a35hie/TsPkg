@@ -30,9 +30,10 @@ npm add -D @a35hie/ts-pkg
 Create a `package.ts` file:
 
 ```typescript
-import { definePackage } from '@a35hie/ts-pkg'
+import { definePackage, BunPm } from '@a35hie/ts-pkg'
 
 export default definePackage({
+  pm: BunPm,
   name: 'my-awesome-package',
   version: '1.0.0',
   description: 'An awesome package',
@@ -115,6 +116,7 @@ Extend from a base config:
 ```typescript
 // base.config.ts
 export default definePackage({
+  pm: BunPm,
   author: 'Your Name',
   license: 'MIT',
   scriptPresets: ['typescript', 'prettier'],
@@ -123,6 +125,7 @@ export default definePackage({
 
 // package.ts
 export default definePackage({
+  pm: BunPm,
   extends: './base.config.ts',
   name: 'my-package',
   dependencies: ['lodash'],

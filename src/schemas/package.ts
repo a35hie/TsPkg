@@ -1,3 +1,5 @@
+import type { PackageManager } from '@/pm/packageManagers'
+
 // Common SPDX license identifiers
 export type License =
   | 'MIT'
@@ -98,6 +100,9 @@ export interface PackageConfig extends Omit<
   StandardPackageJson,
   'scripts' | 'dependencies' | 'devDependencies' | 'peerDependencies'
 > {
+  // Required package manager config used by opk/ts-pkg tooling
+  pm: PackageManager
+
   // Extends another config
   extends?: string | PackageConfig
 

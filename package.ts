@@ -1,4 +1,4 @@
-import { definePackage } from '@/main.ts'
+import { BunPm, definePackage } from '@/main.ts'
 
 export const logo: string = `
  ▄██████████████▄
@@ -13,8 +13,9 @@ export const logo: string = `
 `
 
 export default definePackage({
+  pm: BunPm,
   name: '@opk/ts-pkg',
-  version: '0.4.0',
+  version: '0.5.0',
   description: 'TypeScript-based package.json with magical features.',
   type: 'module',
   license: 'Apache-2.0',

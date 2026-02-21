@@ -53,9 +53,10 @@ async function runGenerate(
       console.error(`× Config file not found: ${configPath}`)
       console.error('\nCreate a package.ts file with:')
       console.error(`
-import { definePackage } from '@a35hie/ts-pkg'
+import { definePackage, BunPm } from '@a35hie/ts-pkg'
 
 export default definePackage({
+  pm: BunPm,
   name: 'my-package',
   version: '1.0.0',
   scriptPresets: ['typescript', 'testing'],
