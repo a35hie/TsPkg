@@ -1,4 +1,4 @@
-import type { PackageManager } from '@/pm/packageManagers'
+import type { PM } from '@/pm/packageManagers'
 
 // Common SPDX license identifiers
 export type License =
@@ -101,10 +101,15 @@ export interface PackageConfig extends Omit<
   'scripts' | 'dependencies' | 'devDependencies' | 'peerDependencies'
 > {
   // Required package manager config used by opk/ts-pkg tooling
-  pm: PackageManager
+  pm: PM
+  // Optional: other pm compat
+  altPms?: PM[]
 
   // Extends another config
   extends?: string | PackageConfig
+  
+  // Custom properties
+  properties?: Record<string, any>
 
   // Script presets: auto-generate common scripts
   scriptPresets?: ScriptPreset[]

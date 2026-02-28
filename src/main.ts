@@ -10,10 +10,14 @@ import type {
 import {
   BunPm,
   DenoPm,
-  NpmPm,
-  PnpmPm,
+  NodePm,
+  PnPm,
   YarnPm,
-  type PackageManager,
+  type PM,
+  type PMLockFlags,
+  type PMIgnoreFlags,
+  type PMScopeFlags,
+  type PMOutputFlags,
 } from '@/pm/packageManagers'
 import {
   createPackageJson,
@@ -30,16 +34,22 @@ export function definePackage(config: PackageConfig): PackageConfig {
 export {
   // package managers
   BunPm,
-  NpmPm,
-  PnpmPm,
+  NodePm,
+  PnPm,
   YarnPm,
   DenoPm,
+  // legacy package manager names
+  NodePm as NpmPm,
+  PnPm as PnpmPm,
 
-  // legacy <0.3.0 support
-  definePackage as definePackageConfig,
+  // api
   createPackageJson,
   writePackageJson,
   syncDependencies,
+  // legacy <0.3.0 support
+  definePackage as definePackageConfig,
+
+  // types
   type PackageConfig,
   type StandardPackageJson,
   type ScriptPreset,
@@ -49,5 +59,11 @@ export {
   type GenerateOptions,
   type SyncOptions,
   type License,
-  type PackageManager,
+  type PM,
+  type PMLockFlags,
+  type PMIgnoreFlags,
+  type PMScopeFlags,
+  type PMOutputFlags,
+  // legacy types
+  type PM as PackageManager,
 }
