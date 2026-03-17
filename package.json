@@ -1,7 +1,7 @@
 {
   "alert": "THIS IS A GENERATED FILE. DO NOT EDIT DIRECTLY. Instead, edit package.ts and run 'ts-pkg' to regenerate.",
   "name": "@opk/ts-pkg",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "TypeScript-based package.json with magical features.",
   "type": "module",
   "license": "Apache-2.0",
