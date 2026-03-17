@@ -15,6 +15,7 @@ Define your package configuration in TypeScript with type safety, auto-complete,
 - **Config inheritance** – Extend from base configurations
 - **Conditional config** – Different settings based on environment, CI, platform
 - **Full TypeScript** - Type-safe with autocomplete
+- **Custom fields** – Extra package.json fields are preserved in output
 
 ## Installation
 

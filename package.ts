@@ -15,7 +15,7 @@ export const logo: string = `
 export default definePackage({
   pm: BunPm,
   name: '@opk/ts-pkg',
-  version: '0.6.1',
+  version: '0.7.0',
   description: 'TypeScript-based package.json with magical features.',
   type: 'module',
   license: 'Apache-2.0',

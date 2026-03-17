@@ -1,4 +1,4 @@
-import type { ConditionalConfig, StandardPackageJson } from '@/schemas/package'
+import type { ConditionalConfig, PackageJsonFields } from '@/schemas/package'
 import { deepMerge } from '@/utils/merge'
 
 interface ConditionContext {
@@ -44,9 +44,9 @@ function evaluateCondition(
 }
 
 export function applyConditions(
-  baseConfig: Partial<StandardPackageJson>,
+  baseConfig: Partial<PackageJsonFields>,
   conditions: ConditionalConfig[] | undefined
-): Partial<StandardPackageJson> {
+): Partial<PackageJsonFields> {
   if (!conditions || conditions.length === 0) {
     return baseConfig
   }
@@ -59,7 +59,7 @@ export function applyConditions(
       result = deepMerge(
         result,
         condition.set as Record<string, unknown>
-      ) as Partial<StandardPackageJson>
+      ) as Partial<PackageJsonFields>
     }
   }
 

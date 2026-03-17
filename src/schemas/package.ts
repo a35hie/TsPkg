@@ -1,4 +1,4 @@
-import type { PM } from '@/pm/packageManagers'
+import type { OpkConfig } from '@/schemas/opk.ts'
 
 // Common SPDX license identifiers
 export type License =
@@ -69,6 +69,10 @@ export interface StandardPackageJson {
   type?: 'module' | 'commonjs'
 }
 
+export type PackageJsonFields = StandardPackageJson & {
+  [key: string]: unknown
+}
+
 // Script preset names
 export type ScriptPreset =
   | 'typescript'
@@ -92,24 +96,19 @@ export interface ConditionalConfig {
     nodeVersion?: string
     ci?: boolean
   }
-  set: Partial<StandardPackageJson>
+  set: Partial<PackageJsonFields>
 }
 
 // Magical package.json config with extra features
-export interface PackageConfig extends Omit<
-  StandardPackageJson,
-  'scripts' | 'dependencies' | 'devDependencies' | 'peerDependencies'
-> {
-  // Required package manager config used by opk/ts-pkg tooling
-  pm: PM
-  // Optional: other pm compat
-  altPms?: PM[]
-
+export interface PackageConfig
+  extends
+    Omit<
+      StandardPackageJson,
+      'scripts' | 'dependencies' | 'devDependencies' | 'peerDependencies'
+    >,
+    OpkConfig {
   // Extends another config
   extends?: string | PackageConfig
-  
-  // Custom properties
-  properties?: Record<string, any>
 
   // Script presets: auto-generate common scripts
   scriptPresets?: ScriptPreset[]
@@ -129,6 +128,8 @@ export interface PackageConfig extends Omit<
     repository?: boolean // from git remote
     author?: boolean // from git config
   }
+
+  [key: string]: any
 }
 
 // Re-export for backwards compatibility

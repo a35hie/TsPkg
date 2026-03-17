@@ -1,4 +1,4 @@
-import type { PackageConfig, StandardPackageJson } from '@/schemas/package'
+import type { PackageConfig, PackageJsonFields } from '@/schemas/package'
 import { getPresetScripts, mergeScripts } from '@/presets/scripts'
 import { resolveDependenciesCached } from '@/resolvers/dependencies'
 import { resolveExtends } from '@/utils/merge'
@@ -14,6 +14,8 @@ export async function createPackageJson(
   options: GenerateOptions = {}
 ): Promise<string> {
   const { indent = 2 } = options
+  const generatedAlert =
+    "THIS IS A GENERATED FILE. DO NOT EDIT DIRECTLY. Instead, edit package.ts and run 'ts-pkg' to regenerate."
 
   // Step 1: Resolve extends chain
   let resolved = await resolveExtends(config)
@@ -31,40 +33,37 @@ export async function createPackageJson(
     resolveDependenciesCached(resolved.peerDependencies),
   ])
 
-  // Step 4: Build standard package.json
-  const packageJson: StandardPackageJson = {
-    name: resolved.name,
-    ...(resolved.version && { version: resolved.version }),
-    ...(resolved.description && { description: resolved.description }),
-    ...(resolved.keywords?.length && { keywords: resolved.keywords }),
-    ...(resolved.homepage && { homepage: resolved.homepage }),
-    ...(resolved.bugs && { bugs: resolved.bugs }),
-    ...(resolved.license && { license: resolved.license }),
-    ...(resolved.author && { author: resolved.author }),
-    ...(resolved.contributors?.length && {
-      contributors: resolved.contributors,
-    }),
-    ...(resolved.repository && { repository: resolved.repository }),
-    ...(resolved.type && { type: resolved.type }),
-    ...(resolved.main && { main: resolved.main }),
-    ...(resolved.module && { module: resolved.module }),
-    ...(resolved.types && { types: resolved.types }),
-    ...(resolved.exports && { exports: resolved.exports }),
-    ...(resolved.bin && { bin: resolved.bin }),
-    ...(resolved.files?.length && { files: resolved.files }),
+  // Step 4: Build package.json from resolved fields (omit config-only keys)
+  const {
+    extends: _extends,
+    alert: _alert,
+    scriptPresets: _scriptPresets,
+    conditions: _conditions,
+    autoInfer: _autoInfer,
+    pm: _pm,
+    altPms: _altPms,
+    properties,
+    scripts: _scripts,
+    dependencies: _dependencies,
+    devDependencies: _devDependencies,
+    peerDependencies: _peerDependencies,
+    ...restFields
+  } = resolved
+
+  const { alert: _propertiesAlert, ...restProperties } = properties ?? {}
+
+  const basePackageJson: PackageJsonFields = {
+    ...restProperties,
+    ...restFields,
+  }
+
+  const packageJson: PackageJsonFields = {
+    alert: generatedAlert,
+    ...basePackageJson,
     ...(Object.keys(finalScripts).length && { scripts: finalScripts }),
     ...(Object.keys(dependencies).length && { dependencies }),
     ...(Object.keys(devDependencies).length && { devDependencies }),
     ...(Object.keys(peerDependencies).length && { peerDependencies }),
-    ...(resolved.optionalDependencies && {
-      optionalDependencies: resolved.optionalDependencies,
-    }),
-    ...(resolved.engines && { engines: resolved.engines }),
-    ...(resolved.os?.length && { os: resolved.os }),
-    ...(resolved.cpu?.length && { cpu: resolved.cpu }),
-    ...(resolved.private !== undefined && { private: resolved.private }),
-    ...(resolved.publishConfig && { publishConfig: resolved.publishConfig }),
-    ...(resolved.workspaces?.length && { workspaces: resolved.workspaces }),
   }
 
   // Step 5: Apply conditional configs

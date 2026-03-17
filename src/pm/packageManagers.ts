@@ -48,7 +48,8 @@ export interface PM {
 
 export const BunPm: PM = {
   name: 'Bun',
-  description: 'Lightning-fast, modern package manager. Recommended for most workflows',
+  description:
+    'Lightning-fast, modern package manager. Recommended for most workflows',
   install: 'bun install',
   add: 'bun add',
   remove: 'bun rm',

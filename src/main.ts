@@ -25,8 +25,14 @@ import {
   type GenerateOptions,
 } from '@/generator/createPackageJson'
 import { syncDependencies, type SyncOptions } from '@/sync/syncDependencies'
+import type { OpkConfig } from '@/schemas/opk.ts'
 
+// Config definition functions
 export function definePackage(config: PackageConfig): PackageConfig {
+  return config
+}
+
+export function defineOpkConfig(config: OpkConfig): OpkConfig {
   return config
 }
 
